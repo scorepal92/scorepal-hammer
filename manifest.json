@@ -1,0 +1,11 @@
+{
+  "name": "ScorePal - Hammer",
+  "short_name": "Hammer",
+  "description": "Offline testbare ScorePal Scorekarte fuer Hammer.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#697959",
+  "orientation": "portrait"
+}

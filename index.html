@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ScorePal · Hammer</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#697959">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Hammer">
+<style>
+  :root {
+    --black: #000000;
+    --white: #ffffff;
+    --brand: #697959;
+    --field: #b3b9af;
+    --card: #e0dddc;
+    --soft: #f4f4f2;
+    --warning: #a2382d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Bahnschrift, "DIN Condensed", "Arial Narrow", Arial, sans-serif;
+    background: var(--white);
+    color: var(--black);
+    min-height: 100vh;
+    padding: 16px;
+    line-height: 1.35;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 3px solid var(--black);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .brand { display: flex; flex-direction: column; }
+  .brand-tag { color: var(--brand); font-size: 14px; margin-bottom: 7px; }
+  .brand-title {
+    font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif;
+    font-size: 42px;
+    line-height: 1;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .brand-sub {
+    color: var(--brand);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    margin-top: 8px;
+  }
+
+  button, input, select { font-family: Bahnschrift, "DIN Condensed", "Arial Narrow", Arial, sans-serif; }
+  button { cursor: pointer; border: none; transition: all 0.15s ease; }
+
+  .btn {
+    background: var(--brand);
+    color: var(--white);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+  }
+  .btn:hover:not(:disabled) { background: var(--black); }
+  .btn:disabled { opacity: 0.38; cursor: not-allowed; }
+  .btn-ghost { background: var(--white); color: var(--black); border: 2px solid var(--black); }
+  .btn-ghost:hover:not(:disabled) { background: var(--black); color: var(--white); }
+  .btn-small { padding: 7px 10px; font-size: 11px; }
+  .btn-hammer { background: var(--black); color: var(--white); min-height: 56px; font-size: 18px; }
+  .btn-hammer:hover:not(:disabled) { background: var(--brand); }
+
+  .panel, details.rules {
+    background: var(--white);
+    border: 2px solid var(--black);
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 var(--black);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  details.rules { border-width: 1px; box-shadow: none; }
+  details.rules summary, details.course-details summary {
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 13px;
+  }
+  details.rules ul { padding-left: 20px; margin-top: 10px; }
+  details.rules li { margin: 5px 0; font-size: 13px; }
+
+  .section-title {
+    font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .setup-section { margin-bottom: 18px; }
+  .setup-section-label, label, .label {
+    font-size: 11px;
+    color: var(--brand);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+  .setup-section-label { display: block; color: var(--black); font-size: 13px; margin-bottom: 8px; }
+
+  input[type="text"], input[type="number"], select {
+    width: 100%;
+    border: 2px solid var(--field);
+    border-radius: 4px;
+    padding: 9px 10px;
+    font-size: 15px;
+    background: var(--white);
+    color: var(--black);
+  }
+  input:focus, select:focus { outline: none; border-color: var(--black); }
+
+  .course-library { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .course-library-actions { display: flex; gap: 6px; }
+  .course-library-status { color: var(--brand); font-size: 12px; font-weight: 700; margin-top: 6px; min-height: 17px; }
+  .course-edit-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  details.course-details { background: var(--white); border: 1px solid var(--field); border-radius: 6px; padding: 10px 14px; margin-top: 8px; }
+  .hint { font-size: 13px; color: var(--brand); margin-top: 8px; font-style: italic; }
+
+  .course-table { width: 100%; border-collapse: separate; border-spacing: 0 2px; margin-top: 10px; }
+  .course-table th { text-align: center; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--brand); padding: 0 4px 4px; }
+  .course-table th:first-child { text-align: left; padding-left: 8px; }
+  .course-table td { padding: 2px; background: var(--white); }
+  .course-table td:first-child { font-weight: 700; padding-left: 8px; font-size: 13px; border-radius: 4px 0 0 4px; }
+  .course-table td:last-child { border-radius: 0 4px 4px 0; }
+  .course-table input { padding: 6px 4px; text-align: center; border: 1px solid var(--field); }
+  .course-table input.error { border-color: var(--warning); background: rgba(162, 56, 45, 0.1); }
+  .course-validation { margin-top: 8px; padding: 8px 10px; border-radius: 4px; font-size: 13px; font-weight: 700; }
+  .course-validation.ok { background: rgba(105, 121, 89, 0.15); border-left: 3px solid var(--brand); }
+  .course-validation.error { background: rgba(162, 56, 45, 0.15); color: var(--warning); border-left: 3px solid var(--warning); }
+
+  .game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .toggle-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+  .toggle-row label { color: var(--black); display: flex; align-items: center; gap: 7px; text-transform: none; letter-spacing: 0; font-size: 14px; }
+  .disabled-note { color: var(--brand); font-size: 12px; margin-top: 5px; }
+
+  .player-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
+  .player-table th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--brand); padding: 0 8px 4px; }
+  .player-table th:first-child { width: 34px; color: var(--black); }
+  .player-table th.team-col { width: 125px; }
+  .player-table th.hcp-col { width: 92px; }
+  .player-table td { padding: 0 4px; vertical-align: middle; }
+  .player-table td:first-child { font-weight: 700; color: var(--black); }
+
+  .scoreboard { display: grid; gap: 8px; background: var(--brand); border-radius: 8px; padding: 10px; margin-bottom: 16px; }
+  .score-tile { background: rgba(255,255,255,0.14); color: var(--white); border-radius: 6px; padding: 10px; text-align: center; }
+  .score-tile.leader { background: var(--black); }
+  .score-name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .score-points { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 36px; font-weight: 700; line-height: 1; margin-top: 4px; }
+
+  .hole-nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+  .nav-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--black); color: var(--white); font-size: 22px; font-weight: 700; flex: 0 0 auto; }
+  .nav-btn:disabled { background: var(--field); color: var(--brand); }
+  .progress { flex: 1; }
+  .progress-text { text-align: center; font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 16px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
+  .pips { display: grid; grid-template-columns: repeat(18, 1fr); gap: 3px; }
+  .pip { height: 7px; border-radius: 2px; background: var(--field); cursor: pointer; }
+  .pip.current { background: var(--black); height: 11px; margin-top: -2px; }
+  .pip.done { background: var(--brand); }
+
+  .hole-card { background: var(--card); border: 2px solid var(--black); border-radius: 8px; box-shadow: 4px 4px 0 var(--black); padding: 16px; margin-bottom: 16px; }
+  .hole-header { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; padding-bottom: 12px; border-bottom: 1px dashed var(--field); margin-bottom: 12px; }
+  .hole-title { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 28px; font-weight: 700; }
+  .hole-meta { color: var(--brand); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .hole-value { text-align: right; font-weight: 700; }
+  .value-number { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 34px; line-height: 1; }
+
+  .match-grid { display: grid; gap: 10px; margin-bottom: 12px; }
+  .team-box { background: rgba(255,255,255,0.55); border-radius: 6px; padding: 10px; }
+  .team-box.active { outline: 3px solid var(--brand); background: var(--white); }
+  .team-name { font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.8px; margin-bottom: 8px; min-height: 18px; }
+  .side-score { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 26px; font-weight: 700; }
+  .side-detail { color: var(--brand); font-size: 12px; margin-top: 2px; }
+  .player-score-row { display: grid; grid-template-columns: 1fr 74px; gap: 8px; align-items: center; margin-top: 6px; }
+  .player-score-row input { text-align: center; font-weight: 700; }
+  .player-vorgabe { color: var(--brand); font-size: 11px; }
+
+  .hammer-strip { display: grid; gap: 10px; margin-bottom: 12px; }
+  .pending-box, .history-box, .result-box { border-radius: 6px; padding: 12px; margin-top: 10px; }
+  .pending-box { background: var(--black); color: var(--white); }
+  .pending-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .history-box { background: rgba(255,255,255,0.5); border: 1px solid var(--field); }
+  .history-list { margin-top: 6px; display: grid; gap: 4px; font-size: 13px; }
+  .muted { color: var(--brand); font-size: 13px; }
+  .result-box { background: var(--black); color: var(--white); text-align: center; }
+  .result-main { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 26px; font-weight: 700; }
+
+  .round-final { background: var(--brand); color: var(--white); border: 3px solid var(--black); box-shadow: 5px 5px 0 var(--black); border-radius: 8px; padding: 16px; text-align: center; margin-bottom: 16px; }
+  .round-final h3 { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 28px; margin-bottom: 8px; text-transform: uppercase; }
+  .winner { background: var(--black); color: var(--white); border-radius: 6px; padding: 12px; margin-top: 10px; }
+
+  @media (max-width: 640px) {
+    body { padding: 12px; }
+    .course-library, .game-grid, .course-edit-actions { grid-template-columns: 1fr; }
+    .course-library-actions { display: grid; grid-template-columns: 1fr 1fr; }
+    .brand-title { font-size: 34px; }
+    .pending-actions { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="brand">
+      <span class="brand-tag">ScorePal Scoringboard</span>
+      <span class="brand-title">Hammer</span>
+      <span class="brand-sub">Single oder Team · ab 2 Spielern · 18 Löcher</span>
+    </div>
+    <button class="btn btn-ghost btn-small" id="resetBtn" type="button">Neue Runde</button>
+  </header>
+
+  <details class="rules">
+    <summary>So funktioniert's</summary>
+    <ul>
+      <li><strong>Setup:</strong> Platz, Spieler, HCP und Brutto/Netto werden wie bei allen Punktespielen im Setup festgelegt.</li>
+      <li><strong>Format:</strong> 1 gegen 1, 2 gegen 2 (Teamwertung) oder 3 Spieler als Gruppen-Hammer.</li>
+      <li><strong>Teams:</strong> Bei Hammer werden Teams vor der Runde festgelegt. Bei 1 gegen 1 und 3 Spielern wird jedes Team automatisch aus einem Spieler gebildet.</li>
+      <li><strong>Teamwertung:</strong> Bei 2 gegen 2 zählt standardmäßig Bestball. Optional kann Aggregat (Summe der Teamscores) gewählt werden.</li>
+      <li><strong>Erster Hammer:</strong> Zu Beginn jedes Lochs ist der Hammer für alle Seiten offen. Wer zuerst klickt, eröffnet das Hammer-Rad.</li>
+      <li><strong>Hammer:</strong> Jeder Hammer verdoppelt den aktuellen Lochwert.</li>
+      <li><strong>Recht wechselt:</strong> Bei 1 gegen 1 und 2 gegen 2 darf nach einem Hammer nur die andere Seite zurückhammern. Bei 3 Spielern dürfen alle anderen Spieler hammern, nur nicht derselbe Spieler direkt noch einmal.</li>
+      <li><strong>Ablehnen:</strong> Optional kann ein Hammer bei 1 gegen 1 oder 2 gegen 2 abgelehnt werden. Dann endet das Loch sofort und die hammernde Seite gewinnt den aktuellen Wert vor der Verdopplung. Bei 3 Spielern ist Ablehnen deaktiviert.</li>
+      <li><strong>Lochwertung:</strong> Der beste gewertete Einzel-/Teamscore gewinnt den aktuellen Lochwert. Bei Netto zählt der Netto-Score nach Vorgabe.</li>
+      <li><strong>Unentschieden:</strong> Je nach Einstellung wird der offene Wert ins nächste Loch mitgenommen oder das Loch zählt nicht.</li>
+    </ul>
+  </details>
+
+  <section class="panel" id="setupCard">
+    <h2 class="section-title">Setup</h2>
+
+    <div class="setup-section">
+      <label class="setup-section-label">Platz</label>
+      <div class="course-library">
+        <select id="savedCourseSelect" aria-label="Gespeicherten Platz auswählen"></select>
+        <div class="course-library-actions">
+          <button class="btn btn-small" id="newCourseBtn" type="button">Neuer Platz</button>
+          <button class="btn btn-ghost btn-small" id="deleteCourseBtn" type="button">Löschen</button>
+        </div>
+      </div>
+      <input type="text" id="courseName" placeholder="Name des Platzes">
+      <div class="course-library-status" id="courseLibraryStatus"></div>
+      <details class="course-details">
+        <summary id="courseSummary">Loch-Details bearbeiten</summary>
+        <p class="hint">Trag pro Loch Par und HCP-Index ein. Jeder HCP-Index 1-18 muss genau einmal vergeben werden.</p>
+        <div id="courseValidation" class="course-validation"></div>
+        <table class="course-table" id="courseTable"></table>
+      </details>
+      <div class="course-edit-actions">
+        <button class="btn" id="saveCourseBtn" type="button">Scorekarte speichern</button>
+        <button class="btn btn-ghost" id="editCourseBtn" type="button">Loch-Details bearbeiten</button>
+      </div>
+    </div>
+
+    <div class="setup-section">
+      <label class="setup-section-label">Spiel</label>
+      <div class="game-grid">
+        <div>
+          <label for="formatSelect">Format</label>
+          <select id="formatSelect">
+            <option value="1v1">1 gegen 1</option>
+            <option value="2v2">2 gegen 2</option>
+            <option value="3p">3 Spieler Gruppen-Hammer</option>
+          </select>
+        </div>
+        <div>
+          <label for="baseValue">Basiswert pro Loch</label>
+          <input id="baseValue" type="number" min="1" max="99" value="1">
+        </div>
+        <div id="teamScoreModeWrap">
+          <label for="teamScoreMode">Teamwertung</label>
+          <select id="teamScoreMode">
+            <option value="bestball">Bestball</option>
+            <option value="aggregate">Aggregat (Summe der Teamscores)</option>
+          </select>
+        </div>
+      </div>
+      <div class="toggle-row">
+        <label><input id="carryoverToggle" type="checkbox" checked> Unentschieden als Carryover</label>
+        <label><input id="declineToggle" type="checkbox"> Hammer ablehnen erlauben</label>
+      </div>
+      <div class="disabled-note" id="declineNote"></div>
+    </div>
+
+    <div class="setup-section">
+      <label class="setup-section-label">Spieler</label>
+      <table class="player-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th class="team-col">Team</th>
+            <th class="hcp-col">HCP</th>
+          </tr>
+        </thead>
+        <tbody id="playerRows"></tbody>
+      </table>
+    </div>
+
+    <div class="setup-section">
+      <label class="setup-section-label">Wertung</label>
+      <div class="toggle-row">
+        <label><input type="radio" name="scoring" value="brutto" checked> Brutto</label>
+        <label><input type="radio" name="scoring" value="netto"> Netto (mit Vorgabe)</label>
+      </div>
+    </div>
+  </section>
+
+  <div class="scoreboard" id="scoreboard"></div>
+
+  <nav class="hole-nav">
+    <button class="nav-btn" id="prevHole" type="button">←</button>
+    <div class="progress">
+      <div class="progress-text" id="progressText">Loch 1 / 18</div>
+      <div class="pips" id="pips"></div>
+    </div>
+    <button class="nav-btn" id="nextHole" type="button">→</button>
+  </nav>
+
+  <main id="holeMount"></main>
+  <div id="finalMount"></div>
+</div>
+
+<script>
+const STORAGE_KEY = 'scorepal_hammer_v4';
+const SHARED_COURSE_KEYS = ['kartenhaus_v3', 'scorepal_hammer_v3', 'scorepal_hammer_v2'];
+
+function createEmptyCourse() {
+  return {
+    name: '',
+    holes: Array.from({ length: 18 }, (_, i) => ({ nr: i + 1, par: 4, hcp: i + 1 }))
+  };
+}
+
+function cloneCourse(course) {
+  return {
+    name: course.name || '',
+    holes: course.holes.map((hole, i) => ({
+      nr: i + 1,
+      par: Number(hole.par) || 4,
+      hcp: Number(hole.hcp) || i + 1
+    }))
+  };
+}
+
+function createHole() {
+  return {
+    strokes: [null, null, null, null],
+    value: null,
+    hammerRight: null,
+    lastHammerBy: null,
+    history: [],
+    pendingHammer: null,
+    decidedByDecline: null
+  };
+}
+
+let state = {
+  course: createEmptyCourse(),
+  savedCourses: {},
+  format: '1v1',
+  teamScoreMode: 'bestball',
+  baseValue: 1,
+  carryover: true,
+  declineAllowed: false,
+  scoringMode: 'brutto',
+  players: [
+    { id: 0, name: 'Anja', team: 'A', hcp: 0 },
+    { id: 1, name: 'Nina', team: 'B', hcp: 0 },
+    { id: 2, name: 'Lena', team: 'A', hcp: 0 },
+    { id: 3, name: 'Sophie', team: 'B', hcp: 25 }
+  ],
+  currentHole: 0,
+  holes: Array.from({ length: 18 }, createHole)
+};
+
+function importSavedCoursesFromOtherGames() {
+  SHARED_COURSE_KEYS.forEach(key => {
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (!parsed.savedCourses) return;
+      Object.keys(parsed.savedCourses).forEach(name => {
+        if (!state.savedCourses[name]) state.savedCourses[name] = cloneCourse(parsed.savedCourses[name]);
+      });
+    } catch (e) {}
+  });
+}
+
+function normalizeState() {
+  if (!state.course || !Array.isArray(state.course.holes) || state.course.holes.length !== 18) state.course = createEmptyCourse();
+  if (!state.savedCourses) state.savedCourses = {};
+  if (!Array.isArray(state.players)) state.players = [];
+  while (state.players.length < 4) {
+    const idx = state.players.length;
+    state.players.push({ id: idx, name: `Spieler ${idx + 1}`, team: idx % 2 === 0 ? 'A' : 'B', hcp: 0 });
+  }
+  state.players = state.players.slice(0, 4).map((player, idx) => ({
+    id: idx,
+    name: player.name || `Spieler ${idx + 1}`,
+    team: player.team || (idx % 2 === 0 ? 'A' : 'B'),
+    hcp: Number(player.hcp) || 0
+  }));
+  if (!['1v1', '2v2', '3p'].includes(state.format)) state.format = '1v1';
+  if (!['bestball', 'aggregate'].includes(state.teamScoreMode)) state.teamScoreMode = 'bestball';
+  if (!['brutto', 'netto'].includes(state.scoringMode)) state.scoringMode = 'brutto';
+  if (!Array.isArray(state.holes) || state.holes.length !== 18) state.holes = Array.from({ length: 18 }, createHole);
+  state.holes.forEach((hole, idx) => {
+    state.holes[idx] = { ...createHole(), ...hole };
+    while (state.holes[idx].strokes.length < 4) state.holes[idx].strokes.push(null);
+  });
+  applyFormatDefaults(false);
+  if (state.format === '3p') state.declineAllowed = false;
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) state = JSON.parse(saved);
+  } catch (e) {}
+  normalizeState();
+  importSavedCoursesFromOtherGames();
+}
+
+function activePlayerIndexes() {
+  if (state.format === '2v2') return [0, 1, 2, 3];
+  if (state.format === '3p') return [0, 1, 2];
+  return [0, 1];
+}
+
+function activeSides() {
+  if (state.format === '3p') return ['A', 'B', 'C'];
+  return ['A', 'B'];
+}
+
+function isThreePlayerMode() { return state.format === '3p'; }
+function isTeamMode() { return state.format === '2v2'; }
+
+function sideName(side) {
+  if (state.format === '2v2') return side === 'A' ? 'Team A' : 'Team B';
+  const playerIdx = side === 'A' ? 0 : side === 'B' ? 1 : 2;
+  return state.players[playerIdx].name || `Spieler ${playerIdx + 1}`;
+}
+
+function playerSide(playerIdx) {
+  if (state.format === '1v1') return playerIdx === 0 ? 'A' : 'B';
+  if (state.format === '3p') return ['A', 'B', 'C'][playerIdx] || null;
+  return state.players[playerIdx].team === 'B' ? 'B' : 'A';
+}
+
+function sidePlayerIndexes(side) {
+  return activePlayerIndexes().filter(idx => playerSide(idx) === side);
+}
+
+function otherSide(side) { return side === 'A' ? 'B' : 'A'; }
+
+function applyFormatDefaults(resetHoleDecisions) {
+  if (state.format === '1v1') {
+    state.players[0].team = 'A';
+    state.players[1].team = 'B';
+  } else if (state.format === '3p') {
+    state.players[0].team = 'A';
+    state.players[1].team = 'B';
+    state.players[2].team = 'C';
+    state.declineAllowed = false;
+  } else {
+    if (!['A', 'B'].includes(state.players[0].team)) state.players[0].team = 'A';
+    if (!['A', 'B'].includes(state.players[1].team)) state.players[1].team = 'B';
+    if (!['A', 'B'].includes(state.players[2].team)) state.players[2].team = 'A';
+    if (!['A', 'B'].includes(state.players[3].team)) state.players[3].team = 'B';
+  }
+  if (resetHoleDecisions) {
+    state.holes.forEach(hole => {
+      hole.hammerRight = null;
+      hole.lastHammerBy = null;
+      hole.pendingHammer = null;
+      hole.decidedByDecline = null;
+    });
+  }
+}
+
+function validateCourse() {
+  const errors = [];
+  const seen = {};
+  state.course.holes.forEach((hole, i) => {
+    if (!hole.par || hole.par < 3 || hole.par > 6) errors.push({ hole: i + 1, field: 'par', msg: `Loch ${i + 1}: Par muss 3-6 sein` });
+    if (!hole.hcp || hole.hcp < 1 || hole.hcp > 18) {
+      errors.push({ hole: i + 1, field: 'hcp', msg: `Loch ${i + 1}: HCP-Index muss 1-18 sein` });
+    } else if (seen[hole.hcp] !== undefined) {
+      errors.push({ hole: i + 1, field: 'hcp', msg: `HCP-Index ${hole.hcp} doppelt vergeben` });
+    } else {
+      seen[hole.hcp] = i;
+    }
+  });
+  return { valid: errors.length === 0, errors };
+}
+
+function totalPar() { return state.course.holes.reduce((sum, h) => sum + (Number(h.par) || 0), 0); }
+function courseStorageName() { return (state.course.name || '').trim(); }
+function savedCourseNames() { return Object.keys(state.savedCourses || {}).sort((a, b) => a.localeCompare(b, 'de')); }
+function saveCurrentCourseToLibrary() {
+  const name = courseStorageName();
+  if (!name || !validateCourse().valid) return false;
+  state.savedCourses[name] = cloneCourse({ ...state.course, name });
+  return true;
+}
+function hasSavedCurrentCourse() {
+  const name = courseStorageName();
+  if (!name || !state.savedCourses[name]) return false;
+  return JSON.stringify(cloneCourse(state.course)) === JSON.stringify(cloneCourse(state.savedCourses[name]));
+}
+
+function strokesForPlayerOnHole(playerIdx, holeIdx) {
+  if (state.scoringMode !== 'netto') return 0;
+  const active = activePlayerIndexes();
+  const lowestHcp = Math.min(...active.map(idx => Number(state.players[idx].hcp) || 0));
+  const diff = Math.round((Number(state.players[playerIdx].hcp) || 0) - lowestHcp);
+  if (diff <= 0) return 0;
+  const rank = state.course.holes[holeIdx].hcp;
+  let strokes = 0;
+  if (rank <= diff) strokes++;
+  if (rank <= diff - 18) strokes++;
+  return strokes;
+}
+
+function rawStroke(playerIdx, holeIdx) {
+  const raw = state.holes[holeIdx].strokes[playerIdx];
+  if (raw === null || raw === '') return null;
+  return Number(raw);
+}
+
+function effectiveStroke(playerIdx, holeIdx) {
+  const raw = rawStroke(playerIdx, holeIdx);
+  if (raw === null) return null;
+  return raw - strokesForPlayerOnHole(playerIdx, holeIdx);
+}
+
+function sideScore(side, holeIdx) {
+  const players = sidePlayerIndexes(side);
+  const scores = players.map(idx => effectiveStroke(idx, holeIdx));
+  if (!players.length || scores.some(score => score === null)) return null;
+  if (state.format === '2v2' && state.teamScoreMode === 'aggregate') return scores.reduce((a, b) => a + b, 0);
+  return Math.min(...scores);
+}
+
+function sideScoreDetail(side, holeIdx) {
+  const players = sidePlayerIndexes(side);
+  const parts = players.map(idx => {
+    const raw = rawStroke(idx, holeIdx);
+    const eff = effectiveStroke(idx, holeIdx);
+    const name = state.players[idx].name || `Spieler ${idx + 1}`;
+    if (raw === null) return `${name}: -`;
+    if (state.scoringMode === 'netto') return `${name}: ${raw} / netto ${eff}`;
+    return `${name}: ${raw}`;
+  });
+  return parts.join(' · ');
+}
+
+function canHammer(side, hole) {
+  if (hole.pendingHammer || hole.decidedByDecline) return false;
+  if (!activeSides().includes(side)) return false;
+  if (!hole.lastHammerBy && !hole.hammerRight) return true;
+  if (isThreePlayerMode()) return side !== hole.lastHammerBy;
+  return hole.hammerRight === side;
+}
+
+function hammerRightText(hole) {
+  if (!hole.lastHammerBy && !hole.hammerRight) return 'alle offen';
+  if (isThreePlayerMode()) return activeSides().filter(side => side !== hole.lastHammerBy).map(sideName).join(' / ');
+  return sideName(hole.hammerRight);
+}
+
+function hasHoleAction(hole) {
+  return hole.history.length > 0 || hole.pendingHammer || hole.decidedByDecline || hole.strokes.some(v => v !== null && v !== '');
+}
+
+function startValueForHole(holeIdx) {
+  let carry = 0;
+  if (!state.carryover) return state.baseValue;
+  for (let i = 0; i < holeIdx; i++) {
+    const result = calculateHole(i);
+    if (result.ready && result.tie) carry += result.value;
+    if (result.ready && !result.tie) carry = 0;
+  }
+  return state.baseValue + carry;
+}
+
+function ensureHoleDefaults(holeIdx) {
+  const hole = state.holes[holeIdx];
+  if (hole.value === null || hole.value === undefined) hole.value = startValueForHole(holeIdx);
+}
+
+function calculateHole(holeIdx) {
+  ensureHoleDefaults(holeIdx);
+  const hole = state.holes[holeIdx];
+  const value = Number(hole.value) || state.baseValue;
+
+  if (state.format === '2v2' && (sidePlayerIndexes('A').length !== 2 || sidePlayerIndexes('B').length !== 2)) {
+    return { ready: false, value, reason: 'Teams müssen genau 2 gegen 2 zugeordnet sein' };
+  }
+
+  if (hole.decidedByDecline) {
+    return { ready: true, tie: false, winner: hole.decidedByDecline.winner, value, reason: `${sideName(hole.decidedByDecline.loser)} hat den Hammer abgelehnt` };
+  }
+
+  const sides = activeSides();
+  const scored = sides.map(side => ({ side, score: sideScore(side, holeIdx) }));
+  if (scored.some(item => item.score === null)) return { ready: false, value, reason: 'Scores fehlen' };
+  const best = Math.min(...scored.map(item => item.score));
+  const winners = scored.filter(item => item.score === best);
+  if (winners.length !== 1) return { ready: true, tie: true, winner: null, value, reason: 'Unentschieden' };
+  return { ready: true, tie: false, winner: winners[0].side, value, reason: 'Besserer Score gewinnt' };
+}
+
+function totals() {
+  const points = { A: 0, B: 0, C: 0 };
+  for (let i = 0; i < 18; i++) {
+    const result = calculateHole(i);
+    if (!result.ready || result.tie) continue;
+    points[result.winner] += result.value;
+  }
+  return points;
+}
+
+function completedHoles() { return state.holes.filter((_, i) => calculateHole(i).ready).length; }
+
+function hammer(side) {
+  const hole = state.holes[state.currentHole];
+  ensureHoleDefaults(state.currentHole);
+  if (!canHammer(side, hole)) return;
+
+  if (state.declineAllowed && !isThreePlayerMode()) {
+    hole.pendingHammer = { by: side, to: otherSide(side), currentValue: hole.value, proposedValue: hole.value * 2 };
+  } else {
+    hole.value *= 2;
+    hole.history.push(`${sideName(side)} hammert auf ${hole.value}`);
+    hole.lastHammerBy = side;
+    hole.hammerRight = isThreePlayerMode() ? null : otherSide(side);
+  }
+  saveState();
+  render();
+}
+
+function acceptHammer() {
+  const hole = state.holes[state.currentHole];
+  if (!hole.pendingHammer) return;
+  const pending = hole.pendingHammer;
+  hole.value = pending.proposedValue;
+  hole.history.push(`${sideName(pending.by)} hammert auf ${hole.value} · angenommen`);
+  hole.lastHammerBy = pending.by;
+  hole.hammerRight = pending.to;
+  hole.pendingHammer = null;
+  saveState();
+  render();
+}
+
+function declineHammer() {
+  const hole = state.holes[state.currentHole];
+  if (!hole.pendingHammer) return;
+  const pending = hole.pendingHammer;
+  hole.decidedByDecline = { winner: pending.by, loser: pending.to };
+  hole.history.push(`${sideName(pending.to)} lehnt ab · ${sideName(pending.by)} gewinnt ${pending.currentValue}`);
+  hole.value = pending.currentValue;
+  hole.pendingHammer = null;
+  saveState();
+  render();
+}
+
+function renderCourseLibrary() {
+  const select = document.getElementById('savedCourseSelect');
+  const deleteBtn = document.getElementById('deleteCourseBtn');
+  const newBtn = document.getElementById('newCourseBtn');
+  const saveBtn = document.getElementById('saveCourseBtn');
+  const editBtn = document.getElementById('editCourseBtn');
+  const status = document.getElementById('courseLibraryStatus');
+  const details = document.querySelector('details.course-details');
+  const names = savedCourseNames();
+  const activeName = courseStorageName();
+  const courseValid = validateCourse().valid;
+  const isSaved = hasSavedCurrentCourse();
+  const existsSaved = Boolean(activeName && state.savedCourses[activeName]);
+  select.innerHTML = '';
+  const empty = document.createElement('option');
+  empty.value = '';
+  empty.textContent = names.length ? 'Gespeicherten Platz auswählen' : 'Noch keine gespeicherten Plätze';
+  select.appendChild(empty);
+  names.forEach(name => {
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name;
+    option.selected = name === activeName;
+    select.appendChild(option);
+  });
+  deleteBtn.disabled = !activeName || !state.savedCourses[activeName];
+  if (isSaved) {
+    saveBtn.textContent = 'Gespeichert';
+    saveBtn.disabled = true;
+    status.textContent = `Gespeichert: ${activeName}`;
+  } else {
+    saveBtn.textContent = existsSaved ? 'Scorekarte aktualisieren' : 'Scorekarte speichern';
+    saveBtn.disabled = !activeName || !courseValid;
+    status.textContent = activeName && courseValid ? (existsSaved ? 'Änderungen vorhanden. Bitte aktualisieren.' : 'Noch nicht gespeichert.') : 'Nicht gespeichert. Bitte Namen und Lochdaten prüfen.';
+  }
+  select.onchange = () => {
+    const selected = select.value;
+    if (!selected || !state.savedCourses[selected]) return;
+    state.course = cloneCourse(state.savedCourses[selected]);
+    saveState();
+    render();
+  };
+  newBtn.onclick = () => { state.course = createEmptyCourse(); saveState(); render(); };
+  saveBtn.onclick = () => {
+    if (!saveCurrentCourseToLibrary()) { renderCourseLibrary(); return; }
+    if (details) details.open = false;
+    saveState();
+    render();
+  };
+  editBtn.onclick = () => { if (details) details.open = true; document.getElementById('courseName').focus(); };
+  deleteBtn.onclick = () => {
+    const name = courseStorageName();
+    if (!name || !state.savedCourses[name]) return;
+    if (!confirm(`Gespeicherten Platz "${name}" löschen?`)) return;
+    delete state.savedCourses[name];
+    saveState();
+    renderCourseLibrary();
+  };
+}
+
+function renderCourseEdit() {
+  const nameInput = document.getElementById('courseName');
+  nameInput.value = state.course.name || '';
+  nameInput.oninput = () => {
+    state.course.name = nameInput.value;
+    saveState();
+    renderCourseSummary();
+    renderCourseLibrary();
+  };
+  const table = document.getElementById('courseTable');
+  const validation = validateCourse();
+  const errorByHole = {};
+  validation.errors.forEach(err => {
+    if (!errorByHole[err.hole]) errorByHole[err.hole] = {};
+    errorByHole[err.hole][err.field] = true;
+  });
+  let html = '<thead><tr><th>Loch</th><th>Par</th><th>HCP-Index</th></tr></thead><tbody>';
+  for (let i = 0; i < 18; i++) {
+    const hole = state.course.holes[i];
+    const parErr = errorByHole[i + 1] && errorByHole[i + 1].par ? 'error' : '';
+    const hcpErr = errorByHole[i + 1] && errorByHole[i + 1].hcp ? 'error' : '';
+    html += `<tr><td>${i + 1}</td><td><input type="number" min="3" max="6" value="${hole.par}" data-hole="${i}" data-field="par" class="${parErr}"></td><td><input type="number" min="1" max="18" value="${hole.hcp}" data-hole="${i}" data-field="hcp" class="${hcpErr}"></td></tr>`;
+  }
+  html += '</tbody>';
+  table.innerHTML = html;
+  table.querySelectorAll('input').forEach(input => {
+    input.oninput = e => {
+      const idx = Number(e.target.dataset.hole);
+      const field = e.target.dataset.field;
+      state.course.holes[idx][field] = parseInt(e.target.value) || 0;
+      saveState();
+      renderCourseSummary();
+      renderCourseLibrary();
+      renderHole();
+    };
+    input.onblur = () => { renderCourseEdit(); renderCourseSummary(); renderCourseLibrary(); renderHole(); };
+  });
+  const box = document.getElementById('courseValidation');
+  if (validation.valid) {
+    box.className = 'course-validation ok';
+    box.innerHTML = `Platzdaten vollständig · Gesamt-Par: <strong>${totalPar()}</strong>`;
+  } else {
+    box.className = 'course-validation error';
+    box.innerHTML = validation.errors.slice(0, 3).map(e => e.msg).join(' · ');
+    if (validation.errors.length > 3) box.innerHTML += ` (+${validation.errors.length - 3} weitere)`;
+  }
+}
+
+function renderCourseSummary() {
+  const el = document.getElementById('courseSummary');
+  const valid = validateCourse().valid;
+  el.textContent = `${state.course.name || 'Eigener Platz'} · Par ${totalPar()} ${valid ? '✓' : '!'} · Loch-Details bearbeiten`;
+}
+
+function renderGameSetup() {
+  document.getElementById('formatSelect').value = state.format;
+  document.getElementById('baseValue').value = state.baseValue;
+  document.getElementById('teamScoreMode').value = state.teamScoreMode;
+  document.getElementById('teamScoreModeWrap').style.display = isTeamMode() ? 'block' : 'none';
+  document.querySelectorAll('.team-col, .team-cell').forEach(el => { el.style.display = isTeamMode() ? '' : 'none'; });
+  document.getElementById('carryoverToggle').checked = state.carryover;
+  if (isThreePlayerMode()) state.declineAllowed = false;
+  const decline = document.getElementById('declineToggle');
+  decline.checked = state.declineAllowed;
+  decline.disabled = isThreePlayerMode();
+  document.getElementById('declineNote').textContent = isThreePlayerMode() ? 'Ablehnen ist bei 3 Spielern deaktiviert, weil es keine eindeutige Gegenseite gibt.' : '';
+}
+
+function bindGameSetup() {
+  document.getElementById('formatSelect').onchange = e => {
+    state.format = e.target.value;
+    applyFormatDefaults(true);
+    saveState();
+    render();
+  };
+  document.getElementById('baseValue').oninput = e => {
+    state.baseValue = Math.max(1, parseInt(e.target.value) || 1);
+    state.holes.forEach((hole, idx) => { if (!hasHoleAction(hole)) hole.value = startValueForHole(idx); });
+    saveState();
+    renderScoreboard();
+    renderHole();
+  };
+  document.getElementById('teamScoreMode').onchange = e => { state.teamScoreMode = e.target.value; saveState(); render(); };
+  document.getElementById('carryoverToggle').onchange = e => { state.carryover = e.target.checked; saveState(); render(); };
+  document.getElementById('declineToggle').onchange = e => {
+    if (isThreePlayerMode()) { state.declineAllowed = false; renderGameSetup(); return; }
+    state.declineAllowed = e.target.checked;
+    saveState();
+    render();
+  };
+}
+
+function renderPlayerSetup() {
+  const tbody = document.getElementById('playerRows');
+  tbody.innerHTML = '';
+  const active = activePlayerIndexes();
+  state.players.forEach((player, idx) => {
+    const visible = active.includes(idx);
+    const tr = document.createElement('tr');
+    tr.style.display = visible ? '' : 'none';
+    const teamDisabled = state.format !== '2v2' ? 'disabled' : '';
+    const teamOptions = state.format === '3p'
+      ? `<option value="${playerSide(idx)}" selected>${playerSide(idx)}</option>`
+      : `<option value="A" ${player.team === 'A' ? 'selected' : ''}>A</option><option value="B" ${player.team === 'B' ? 'selected' : ''}>B</option>`;
+    tr.innerHTML = `
+      <td>${idx + 1}.</td>
+      <td><input type="text" value="${player.name}" data-player="${idx}" data-field="name" placeholder="Name"></td>
+      <td class="team-cell"><select data-player="${idx}" data-field="team" ${teamDisabled}>${teamOptions}</select></td>
+      <td><input type="number" value="${player.hcp}" data-player="${idx}" data-field="hcp" min="0" max="54" step="0.1"></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  tbody.querySelectorAll('input, select').forEach(input => {
+    input.oninput = input.onchange = e => {
+      const idx = Number(e.target.dataset.player);
+      const field = e.target.dataset.field;
+      if (field === 'hcp') state.players[idx].hcp = parseFloat(e.target.value) || 0;
+      else state.players[idx][field] = e.target.value;
+      saveState();
+      renderScoreboard();
+      renderHole();
+      renderFinal();
+    };
+  });
+}
+
+function renderScoringMode() {
+  document.querySelectorAll('input[name="scoring"]').forEach(input => {
+    input.checked = input.value === state.scoringMode;
+    input.onchange = () => { state.scoringMode = input.value; saveState(); render(); };
+  });
+}
+
+function renderScoreboard() {
+  const score = totals();
+  const sides = activeSides();
+  const values = sides.map(side => score[side]);
+  const max = Math.max(...values);
+  const min = Math.min(...values);
+  const board = document.getElementById('scoreboard');
+  board.style.gridTemplateColumns = `repeat(${sides.length}, 1fr)`;
+  board.innerHTML = sides.map(side => `
+    <div class="score-tile ${score[side] === max && max > min ? 'leader' : ''}">
+      <div class="score-name">${sideName(side)}</div>
+      <div class="score-points">${score[side]}</div>
+      <div class="muted">Punkte</div>
+    </div>
+  `).join('');
+}
+
+function renderNav() {
+  document.getElementById('progressText').textContent = `Loch ${state.currentHole + 1} / 18`;
+  document.getElementById('prevHole').disabled = state.currentHole === 0;
+  document.getElementById('nextHole').disabled = state.currentHole === 17;
+  document.getElementById('prevHole').onclick = () => { if (state.currentHole > 0) { state.currentHole--; saveState(); render(); } };
+  document.getElementById('nextHole').onclick = () => { if (state.currentHole < 17) { state.currentHole++; saveState(); render(); } };
+  const pips = document.getElementById('pips');
+  pips.innerHTML = '';
+  for (let i = 0; i < 18; i++) {
+    const pip = document.createElement('div');
+    pip.className = 'pip';
+    if (calculateHole(i).ready) pip.classList.add('done');
+    if (i === state.currentHole) pip.classList.add('current');
+    pip.onclick = () => { state.currentHole = i; saveState(); render(); };
+    pips.appendChild(pip);
+  }
+}
+
+function renderSideBox(side, holeIdx) {
+  const score = sideScore(side, holeIdx);
+  const hole = state.holes[holeIdx];
+  const playerRows = sidePlayerIndexes(side).map(idx => {
+    const raw = rawStroke(idx, holeIdx);
+    const vorgabe = strokesForPlayerOnHole(idx, holeIdx);
+    return `
+      <div class="player-score-row">
+        <div>
+          <strong>${state.players[idx].name || `Spieler ${idx + 1}`}</strong>
+          ${state.scoringMode === 'netto' && vorgabe > 0 ? `<div class="player-vorgabe">+${vorgabe} Vorgabe</div>` : ''}
+        </div>
+        <input class="strokeInput" data-player="${idx}" type="number" min="1" max="20" value="${raw ?? ''}" placeholder="-">
+      </div>
+    `;
+  }).join('');
+  return `
+    <div class="team-box ${canHammer(side, hole) ? 'active' : ''}">
+      <div class="team-name">${sideName(side)}</div>
+      <div class="side-score">${score === null ? '-' : score}</div>
+      <div class="side-detail">${sideScoreDetail(side, holeIdx)}</div>
+      ${playerRows}
+    </div>
+  `;
+}
+
+function renderHole() {
+  ensureHoleDefaults(state.currentHole);
+  const holeIdx = state.currentHole;
+  const hole = state.holes[holeIdx];
+  const result = calculateHole(holeIdx);
+  const sides = activeSides();
+  const pending = hole.pendingHammer;
+  const meta = state.course.holes[holeIdx];
+  const mount = document.getElementById('holeMount');
+  mount.innerHTML = `
+    <section class="hole-card">
+      <div class="hole-header">
+        <div>
+          <div class="hole-title">Loch ${holeIdx + 1}</div>
+          <div class="hole-meta">Par ${meta.par} · HCP-Index ${meta.hcp} · ${state.scoringMode === 'netto' ? 'Netto' : 'Brutto'}</div>
+          <div class="muted">Hammer-Recht: ${hammerRightText(hole)}</div>
+        </div>
+        <div class="hole-value">
+          <div class="label">Aktueller Lochwert</div>
+          <div class="value-number">${hole.value}</div>
+        </div>
+      </div>
+
+      <div class="match-grid" style="grid-template-columns: repeat(${sides.length}, 1fr);">
+        ${sides.map(side => renderSideBox(side, holeIdx)).join('')}
+      </div>
+
+      <div class="hammer-strip" style="grid-template-columns: repeat(${sides.length}, 1fr);">
+        ${sides.map(side => `<button class="btn btn-hammer hammerButton" data-side="${side}" type="button" ${canHammer(side, hole) ? '' : 'disabled'}>Hammer ${sideName(side)}</button>`).join('')}
+      </div>
+
+      ${pending ? `
+        <div class="pending-box">
+          <strong>${sideName(pending.by)} hammert von ${pending.currentValue} auf ${pending.proposedValue}.</strong>
+          <div class="muted">${sideName(pending.to)} muss entscheiden.</div>
+          <div class="muted">Annehmen: Das Loch wird um ${pending.proposedValue} Punkte gespielt. Ablehnen: ${sideName(pending.by)} gewinnt sofort ${pending.currentValue} Punkte.</div>
+          <div class="pending-actions">
+            <button class="btn" id="acceptHammer" type="button">Annehmen</button>
+            <button class="btn btn-ghost" id="declineHammer" type="button">Ablehnen</button>
+          </div>
+        </div>
+      ` : ''}
+
+      <div class="history-box">
+        <div class="label">Hammer-Verlauf</div>
+        <div class="history-list">${hole.history.length ? hole.history.map(item => `<div>${item}</div>`).join('') : '<div class="muted">Noch kein Hammer auf diesem Loch.</div>'}</div>
+      </div>
+
+      <div class="result-box">
+        <div class="result-main">${result.ready ? (result.tie ? 'Unentschieden' : `${sideName(result.winner)} gewinnt +${result.value}`) : result.reason}</div>
+        <div class="muted">${result.ready ? result.reason : 'Scores eintragen, um das Loch automatisch zu werten.'}</div>
+      </div>
+    </section>
+  `;
+
+  document.querySelectorAll('.strokeInput').forEach(input => {
+    input.oninput = e => {
+      const idx = Number(e.target.dataset.player);
+      hole.strokes[idx] = e.target.value === '' ? null : parseInt(e.target.value);
+      saveState();
+      renderScoreboard();
+      renderNav();
+      renderHole();
+      renderFinal();
+    };
+  });
+  document.querySelectorAll('.hammerButton').forEach(button => { button.onclick = () => hammer(button.dataset.side); });
+  const accept = document.getElementById('acceptHammer');
+  const decline = document.getElementById('declineHammer');
+  if (accept) accept.onclick = acceptHammer;
+  if (decline) decline.onclick = declineHammer;
+}
+
+function renderFinal() {
+  const mount = document.getElementById('finalMount');
+  if (completedHoles() < 18) { mount.innerHTML = ''; return; }
+  const score = totals();
+  const ranked = activeSides().map(side => ({ side, score: score[side] }));
+  const max = Math.max(...ranked.map(item => item.score));
+  const winners = ranked.filter(item => item.score === max);
+  mount.innerHTML = `
+    <section class="round-final">
+      <h3>Runde abgeschlossen</h3>
+      <div class="winner">
+        <div class="label">${winners.length === 1 ? 'Sieger' : 'Ergebnis'}</div>
+        <div class="result-main">${winners.length === 1 ? `${sideName(winners[0].side)} · ${max} Punkte` : `Unentschieden · ${ranked.map(item => `${sideName(item.side)} ${item.score}`).join(' · ')}`}</div>
+      </div>
+    </section>
+  `;
+}
+
+function render() {
+  renderCourseLibrary();
+  renderCourseEdit();
+  renderCourseSummary();
+  renderGameSetup();
+  bindGameSetup();
+  renderPlayerSetup();
+  renderScoringMode();
+  renderScoreboard();
+  renderNav();
+  renderHole();
+  renderFinal();
+}
+
+document.getElementById('resetBtn').onclick = () => {
+  if (!confirm('Neue Hammer-Runde starten? Alle Eingaben werden gelöscht.')) return;
+  state.currentHole = 0;
+  state.holes = Array.from({ length: 18 }, createHole);
+  saveState();
+  render();
+};
+
+loadState();
+render();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js').catch(err => {
+      console.warn('Service worker registration failed', err);
+    });
+  });
+}
+</script>
+</body>
+</html>
