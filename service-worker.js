@@ -1,4 +1,4 @@
-const CACHE_NAME = "scorepal-hammer-v1";
+const CACHE_NAME = "scorepal-hammer-v2";
 const FILES_TO_CACHE = [
   "./",
   "./index.html",

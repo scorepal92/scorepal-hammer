@@ -4,10 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ScorePal · Hammer</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#697959">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Hammer">
 <style>
   :root {
     --black: #000000;
@@ -230,7 +226,7 @@
   <details class="rules">
     <summary>So funktioniert's</summary>
     <ul>
-      <li><strong>Setup:</strong> Platz, Spieler, HCP und Brutto/Netto werden wie bei allen Punktespielen im Setup festgelegt.</li>
+      <li><strong>Setup:</strong> Platz, Spieler, Team, HCP (SPV.) und Brutto/Netto werden wie bei allen Beispiel-Spielen im Setup festgelegt.</li>
       <li><strong>Format:</strong> 1 gegen 1, 2 gegen 2 (Teamwertung) oder 3 Spieler als Gruppen-Hammer.</li>
       <li><strong>Teams:</strong> Bei Hammer werden Teams vor der Runde festgelegt. Bei 1 gegen 1 und 3 Spielern wird jedes Team automatisch aus einem Spieler gebildet.</li>
       <li><strong>Teamwertung:</strong> Bei 2 gegen 2 zählt standardmäßig Bestball. Optional kann Aggregat (Summe der Teamscores) gewählt werden.</li>
@@ -307,7 +303,7 @@
             <th></th>
             <th>Name</th>
             <th class="team-col">Team</th>
-            <th class="hcp-col">HCP (Spv.)</th>
+            <th class="hcp-col">HCP (SPV.)</th>
           </tr>
         </thead>
         <tbody id="playerRows"></tbody>
@@ -807,7 +803,6 @@ function renderGameSetup() {
   document.getElementById('baseValue').value = state.baseValue;
   document.getElementById('teamScoreMode').value = state.teamScoreMode;
   document.getElementById('teamScoreModeWrap').style.display = isTeamMode() ? 'block' : 'none';
-  document.querySelectorAll('.team-col, .team-cell').forEach(el => { el.style.display = isTeamMode() ? '' : 'none'; });
   document.getElementById('carryoverToggle').checked = state.carryover;
   if (isThreePlayerMode()) state.declineAllowed = false;
   const decline = document.getElementById('declineToggle');
@@ -1057,14 +1052,6 @@ document.getElementById('resetBtn').onclick = () => {
 
 loadState();
 render();
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js').catch(err => {
-      console.warn('Service worker registration failed', err);
-    });
-  });
-}
 </script>
 </body>
 </html>
