@@ -156,30 +156,32 @@
   .player-table td { padding: 0 4px; vertical-align: middle; }
   .player-table td:first-child { font-weight: 700; color: var(--black); }
 
-  .scoreboard { display: grid; gap: 8px; background: var(--brand); border-radius: 8px; padding: 10px; margin-bottom: 16px; }
-  .score-tile { background: rgba(255,255,255,0.14); color: var(--white); border-radius: 6px; padding: 10px; text-align: center; }
-  .score-tile.leader { background: var(--black); }
+  .scoreboard { display: grid; gap: 8px; background: var(--brand); color: var(--white); border-radius: 8px; padding: 14px; margin-bottom: 16px; }
+  .score-tile { text-align: center; padding: 8px 4px; border-radius: 6px; background: rgba(245, 243, 236, 0.08); transition: background 0.2s; }
+  .score-tile.leader { background: var(--black); color: var(--white); }
   .score-name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .score-points { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 36px; font-weight: 700; line-height: 1; margin-top: 4px; }
+  .score-points { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 30px; font-weight: 700; line-height: 1; }
 
-  .hole-nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+  .hole-nav { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
   .nav-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--black); color: var(--white); font-size: 22px; font-weight: 700; flex: 0 0 auto; }
-  .nav-btn:disabled { background: var(--field); color: var(--brand); }
+  .nav-btn:disabled { background: var(--field); color: var(--black); cursor: not-allowed; }
   .progress { flex: 1; }
   .progress-text { text-align: center; font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 16px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
   .pips { display: grid; grid-template-columns: repeat(18, 1fr); gap: 3px; }
-  .pip { height: 7px; border-radius: 2px; background: var(--field); cursor: pointer; }
-  .pip.current { background: var(--black); height: 11px; margin-top: -2px; }
+  .pip { height: 6px; border-radius: 2px; background: var(--field); cursor: pointer; }
+  .pip.current { background: var(--black); height: 10px; margin-top: -2px; }
   .pip.done { background: var(--brand); }
 
-  .hole-card { background: var(--card); border: 2px solid var(--black); border-radius: 8px; box-shadow: 4px 4px 0 var(--black); padding: 16px; margin-bottom: 16px; }
-  .hole-header { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; padding-bottom: 12px; border-bottom: 1px dashed var(--field); margin-bottom: 12px; }
-  .hole-title { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 28px; font-weight: 700; }
+  .hole-card { background: var(--card); border: 2px solid var(--black); border-radius: 8px; box-shadow: 3px 3px 0 var(--black); padding: 18px; margin-bottom: 16px; }
+  .hole-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 2px dashed var(--field); margin-bottom: 14px; }
+  .hole-title { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 28px; font-weight: 700; color: var(--black); }
   .hole-meta { color: var(--brand); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-  .hole-value { text-align: right; font-weight: 700; }
-  .value-number { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 34px; line-height: 1; }
+  .hole-info { text-align: right; font-size: 13px; color: var(--brand); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .hole-info-par { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 22px; font-weight: 700; color: var(--black); letter-spacing: 0; text-transform: none; }
+  .hole-value { display:flex; justify-content:space-between; align-items:center; gap:10px; background:rgba(255,255,255,0.55); border-radius:6px; padding:10px 12px; margin-bottom:12px; font-weight:700; }
+  .value-number { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 30px; line-height: 1; }
 
-  .match-grid { display: grid; gap: 10px; margin-bottom: 12px; }
+  .match-grid { display: grid; gap: 8px; margin-bottom: 12px; }
   .team-box { background: rgba(255,255,255,0.55); border-radius: 6px; padding: 10px; }
   .team-box.active { outline: 3px solid var(--brand); background: var(--white); }
   .team-name { font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.8px; margin-bottom: 8px; min-height: 18px; }
@@ -189,7 +191,7 @@
   .player-score-row input { text-align: center; font-weight: 700; }
   .player-vorgabe { color: var(--brand); font-size: 11px; }
 
-  .hammer-strip { display: grid; gap: 10px; margin-bottom: 12px; }
+  .hammer-strip { display: grid; gap: 8px; margin-bottom: 12px; }
   .pending-box, .history-box, .result-box { border-radius: 6px; padding: 12px; margin-top: 10px; }
   .pending-box { background: var(--black); color: var(--white); }
   .pending-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
@@ -198,25 +200,328 @@
   .muted { color: var(--brand); font-size: 13px; }
   .result-box { background: var(--black); color: var(--white); text-align: center; }
   .result-main { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 26px; font-weight: 700; }
-
-  .round-final { background: var(--brand); color: var(--white); border: 3px solid var(--black); box-shadow: 5px 5px 0 var(--black); border-radius: 8px; padding: 16px; text-align: center; margin-bottom: 16px; }
-  .round-final h3 { font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif; font-size: 28px; margin-bottom: 8px; text-transform: uppercase; }
   .winner { background: var(--black); color: var(--white); border-radius: 6px; padding: 12px; margin-top: 10px; }
 
   @media (max-width: 640px) {
     body { padding: 12px; }
     .course-library, .game-grid, .course-edit-actions { grid-template-columns: 1fr; }
-    .course-library-actions { display: grid; grid-template-columns: 1fr 1fr; }
+    .course-library-actions { display: grid; grid-template-columns: 1fr; }
     .brand-title { font-size: 34px; }
+    .scoreboard { grid-template-columns: repeat(2, 1fr) !important; }
     .pending-actions { grid-template-columns: 1fr; }
   }
+
+
+  /* ScorePal shared layout standard */
+  details.rules {
+    background: var(--white);
+    border: 2px solid var(--black);
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 var(--black);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  details.rules summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 13px;
+    line-height: 1.2;
+  }
+  details.rules ul,
+  details.rules ol {
+    padding-left: 20px;
+    margin: 10px 0 0;
+  }
+  details.rules li {
+    font-size: 13px;
+    margin: 5px 0;
+    line-height: 1.35;
+  }
+  header #resetBtn,
+  .header-actions #resetBtn {
+    width: auto;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 13px;
+    line-height: 1;
+  }
+  .scoreboard {
+    background: var(--brand);
+    color: var(--white);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 16px;
+    gap: 8px;
+  }
+  .score-tile {
+    background: rgba(255,255,255,0.12);
+    color: var(--white);
+    border-radius: 6px;
+    padding: 8px 4px;
+    text-align: center;
+  }
+  .score-name,
+  .score-label {
+    color: inherit;
+  }
+  .score-label {
+    opacity: .82;
+  }
+  .hole-card,
+  .panel,
+  .setup-card,
+  .result-panel,
+  .tracker-panel,
+  .history-panel,
+  .final-panel,
+  .bingo-card {
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 var(--black);
+  }
+  @media (max-width: 640px) {
+    header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    .header-actions {
+      align-self: flex-start;
+      margin-top: 8px;
+    }
+    header #resetBtn,
+    .header-actions #resetBtn {
+      width: auto;
+      max-width: 100%;
+      padding: 10px 18px;
+      font-size: 13px;
+      min-height: 44px;
+    }
+  }
+
+
+
+  /* Hammer contrast fix */
+  .match-side {
+    background: rgba(255,255,255,0.16);
+    color: var(--white);
+  }
+  .match-side.winner {
+    background: var(--black);
+    color: var(--white);
+  }
+  .side-detail {
+    color: inherit;
+    opacity: .88;
+    font-weight: 700;
+  }
+  .match-side .side-detail {
+    color: inherit;
+  }
+
+
+
+  /* ScorePal shared header and status standard */
+  .brand-tag,
+  .brand-kicker {
+    display: block;
+    color: var(--brand);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .brand-title,
+  header h1.brand-title {
+    display: block;
+    font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: .98;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: var(--black);
+  }
+  .brand-sub {
+    display: block;
+    color: var(--brand);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+  .course-status.error,
+  .course-validation.error,
+  .validation-error {
+    color: var(--warning);
+  }
+  .score-label,
+  .score-tile .muted,
+  .score-tile .score-label {
+    color: var(--white);
+    opacity: .9;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .hole-meta,
+  .hole-subline {
+    margin-top: 12px;
+    color: var(--brand);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    line-height: 1.35;
+  }
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--black);
+    color: var(--white);
+    border-radius: 999px;
+    padding: 4px 12px;
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    .brand-title,
+    header h1.brand-title {
+      font-size: 34px;
+    }
+    .brand-sub {
+      margin-top: 8px;
+    }
+  }
+
+
+
+  /* ScorePal shared final winner standard */
+  .final-banner {
+    background: var(--black);
+    color: var(--white);
+    padding: 18px;
+    border-radius: 8px;
+    margin: 16px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-banner.complete {
+    background: var(--brand);
+    border: 3px solid var(--black);
+    box-shadow: 5px 5px 0 var(--black);
+  }
+  .final-banner h3 {
+    position: relative;
+    z-index: 1;
+    font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif;
+    font-size: 42px;
+    line-height: 1;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .winner-card {
+    position: relative;
+    z-index: 1;
+    margin: 10px auto 0;
+    max-width: 620px;
+    padding: 20px 14px;
+    background: var(--black);
+    color: var(--white);
+    border-radius: 6px;
+    text-align: center;
+  }
+  .winner-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .winner-name,
+  .winner-title {
+    display: block;
+    font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif;
+    font-size: 54px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--white);
+  }
+  .winner-points {
+    display: block;
+    font-family: "Bahnschrift Condensed", Bahnschrift, "Arial Narrow", Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 10px;
+    color: var(--white);
+  }
+  .fireworks { position: absolute; inset: 0; pointer-events: none; }
+  .firework {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 -18px 0 var(--white), 13px -13px 0 var(--black), 18px 0 0 var(--white), 13px 13px 0 var(--black), 0 18px 0 var(--white), -13px 13px 0 var(--black), -18px 0 0 var(--white), -13px -13px 0 var(--black);
+    animation: pop 1.4s ease-in-out infinite;
+    opacity: .8;
+  }
+  .firework.one { left: 12%; top: 22%; }
+  .firework.two { right: 13%; top: 18%; animation-delay: .35s; }
+  .firework.three { left: 50%; bottom: 18%; animation-delay: .7s; }
+  @keyframes pop { 0%,100% { transform: scale(.8); opacity:.55; } 50% { transform: scale(1.25); opacity:1; } }
+  @media (max-width: 640px) {
+    .final-banner { padding: 16px 10px; }
+    .final-banner h3 { font-size: 32px; }
+    .winner-name,
+    .winner-title { font-size: 44px; }
+    .winner-points { font-size: 24px; }
+  }
+
+
+
+  /* ScorePal shared hole header separation */
+  .hole-header {
+    align-items: flex-start;
+  }
+  .hole-context {
+    margin-top: -2px;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+    border-bottom: 2px dashed var(--field);
+  }
+  .hole-header + .hole-context {
+    margin-top: -2px;
+  }
+  .hole-header.has-context {
+    border-bottom: 0;
+    margin-bottom: 0;
+  }
+  .hole-context .hole-meta {
+    margin-top: 6px;
+  }
+
 </style>
 </head>
 <body>
 <div class="container">
   <header>
     <div class="brand">
-      <span class="brand-tag">ScorePal Scoringboard</span>
+      <span class="brand-tag">ScorePal Scoring Board</span>
       <span class="brand-title">Hammer</span>
       <span class="brand-sub">Single oder Team · ab 2 Spielern · 18 Löcher</span>
     </div>
@@ -225,7 +530,7 @@
 
   <details class="rules">
     <summary>So funktioniert's</summary>
-    <ul>
+    <ol>
       <li><strong>Setup:</strong> Platz, Spieler, Team, HCP (SPV.) und Brutto/Netto werden wie bei allen Beispiel-Spielen im Setup festgelegt.</li>
       <li><strong>Format:</strong> 1 gegen 1, 2 gegen 2 (Teamwertung) oder 3 Spieler als Gruppen-Hammer.</li>
       <li><strong>Teams:</strong> Bei Hammer werden Teams vor der Runde festgelegt. Bei 1 gegen 1 und 3 Spielern wird jedes Team automatisch aus einem Spieler gebildet.</li>
@@ -236,7 +541,7 @@
       <li><strong>Ablehnen:</strong> Optional kann ein Hammer bei 1 gegen 1 oder 2 gegen 2 abgelehnt werden. Dann endet das Loch sofort und die hammernde Seite gewinnt den aktuellen Wert vor der Verdopplung. Bei 3 Spielern ist Ablehnen deaktiviert.</li>
       <li><strong>Lochwertung:</strong> Der beste gewertete Einzel-/Teamscore gewinnt den aktuellen Lochwert. Bei Netto zählt der Netto-Score nach Vorgabe.</li>
       <li><strong>Unentschieden:</strong> Je nach Einstellung wird der offene Wert ins nächste Loch mitgenommen oder das Loch zählt nicht.</li>
-    </ul>
+    </ol>
   </details>
 
   <section class="panel" id="setupCard">
@@ -248,10 +553,9 @@
         <select id="savedCourseSelect" aria-label="Gespeicherten Platz auswählen"></select>
         <div class="course-library-actions">
           <button class="btn btn-small" id="newCourseBtn" type="button">Neuer Platz</button>
-          <button class="btn btn-ghost btn-small" id="deleteCourseBtn" type="button">Löschen</button>
         </div>
       </div>
-      <input type="text" id="courseName" placeholder="Name des Platzes">
+      <input type="text" id="courseName" placeholder="Name des Platzes (z.B. Golfclub Wien)">
       <div class="course-library-status" id="courseLibraryStatus"></div>
       <details class="course-details">
         <summary id="courseSummary">Loch-Details bearbeiten</summary>
@@ -686,7 +990,6 @@ function declineHammer() {
 
 function renderCourseLibrary() {
   const select = document.getElementById('savedCourseSelect');
-  const deleteBtn = document.getElementById('deleteCourseBtn');
   const newBtn = document.getElementById('newCourseBtn');
   const saveBtn = document.getElementById('saveCourseBtn');
   const editBtn = document.getElementById('editCourseBtn');
@@ -709,15 +1012,17 @@ function renderCourseLibrary() {
     option.selected = name === activeName;
     select.appendChild(option);
   });
-  deleteBtn.disabled = !activeName || !state.savedCourses[activeName];
   if (isSaved) {
     saveBtn.textContent = 'Gespeichert';
     saveBtn.disabled = true;
     status.textContent = `Gespeichert: ${activeName}`;
+    status.className = 'hint course-status saved';
   } else {
     saveBtn.textContent = existsSaved ? 'Scorekarte aktualisieren' : 'Scorekarte speichern';
     saveBtn.disabled = !activeName || !courseValid;
-    status.textContent = activeName && courseValid ? (existsSaved ? 'Änderungen vorhanden. Bitte aktualisieren.' : 'Noch nicht gespeichert.') : 'Nicht gespeichert. Bitte Namen und Lochdaten prüfen.';
+    const hasCourseError = !(activeName && courseValid);
+    status.textContent = hasCourseError ? 'Nicht gespeichert. Bitte Namen und Lochdaten prüfen.' : (existsSaved ? 'Änderungen vorhanden. Bitte aktualisieren.' : 'Noch nicht gespeichert.');
+    status.className = `hint course-status ${hasCourseError ? 'error' : 'pending'}`;
   }
   select.onchange = () => {
     const selected = select.value;
@@ -734,14 +1039,6 @@ function renderCourseLibrary() {
     render();
   };
   editBtn.onclick = () => { if (details) details.open = true; document.getElementById('courseName').focus(); };
-  deleteBtn.onclick = () => {
-    const name = courseStorageName();
-    if (!name || !state.savedCourses[name]) return;
-    if (!confirm(`Gespeicherten Platz "${name}" löschen?`)) return;
-    delete state.savedCourses[name];
-    saveState();
-    renderCourseLibrary();
-  };
 }
 
 function renderCourseEdit() {
@@ -888,7 +1185,7 @@ function renderScoreboard() {
     <div class="score-tile ${score[side] === max && max > min ? 'leader' : ''}">
       <div class="score-name">${sideName(side)}</div>
       <div class="score-points">${score[side]}</div>
-      <div class="muted">Punkte</div>
+      <div class="muted">PUNKTE</div>
     </div>
   `).join('');
 }
@@ -948,16 +1245,22 @@ function renderHole() {
   const mount = document.getElementById('holeMount');
   mount.innerHTML = `
     <section class="hole-card">
-      <div class="hole-header">
+      <div class="hole-header has-context">
         <div>
           <div class="hole-title">Loch ${holeIdx + 1}</div>
-          <div class="hole-meta">Par ${meta.par} · HCP-Index ${meta.hcp} · ${state.scoringMode === 'netto' ? 'Netto' : 'Brutto'}</div>
-          <div class="muted">Hammer-Recht: ${hammerRightText(hole)}</div>
         </div>
-        <div class="hole-value">
-          <div class="label">Aktueller Lochwert</div>
-          <div class="value-number">${hole.value}</div>
+        <div class="hole-info">
+          <div class="hole-info-par">Par ${meta.par}</div>
+          <div>HCP-Index ${meta.hcp}</div>
         </div>
+      </div>
+      <div class="hole-context">
+        <div class="hole-meta">${state.scoringMode === 'netto' ? 'Netto' : 'Brutto'} · Hammer-Recht: ${hammerRightText(hole)}</div>
+      </div>
+
+      <div class="hole-value">
+        <div class="label">Aktueller Lochwert</div>
+        <div class="value-number">${hole.value}</div>
       </div>
 
       <div class="match-grid" style="grid-template-columns: repeat(${sides.length}, 1fr);">
@@ -1017,14 +1320,22 @@ function renderFinal() {
   const ranked = activeSides().map(side => ({ side, score: score[side] }));
   const max = Math.max(...ranked.map(item => item.score));
   const winners = ranked.filter(item => item.score === max);
+  const winnerName = winners.length === 1 ? sideName(winners[0].side) : winners.map(item => sideName(item.side)).join(' & ');
+  const winnerPoints = winners.length === 1 ? `${max} Punkte` : `${max} Punkte je Team`;
   mount.innerHTML = `
-    <section class="round-final">
-      <h3>Runde abgeschlossen</h3>
-      <div class="winner">
-        <div class="label">${winners.length === 1 ? 'Sieger' : 'Ergebnis'}</div>
-        <div class="result-main">${winners.length === 1 ? `${sideName(winners[0].side)} · ${max} Punkte` : `Unentschieden · ${ranked.map(item => `${sideName(item.side)} ${item.score}`).join(' · ')}`}</div>
+    <div class="final-banner complete">
+      <div class="fireworks" aria-hidden="true">
+        <span class="firework one"></span>
+        <span class="firework two"></span>
+        <span class="firework three"></span>
       </div>
-    </section>
+      <h3>Runde abgeschlossen</h3>
+      <div class="winner-card">
+        <div class="winner-label">${winners.length > 1 ? 'Sieger geteilt' : 'Sieger'}</div>
+        <div class="winner-name">${winnerName}</div>
+        <div class="winner-points">${winnerPoints}</div>
+      </div>
+    </div>
   `;
 }
 
